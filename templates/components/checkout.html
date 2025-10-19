@@ -1,0 +1,66 @@
+<section class="checkout section--lg">
+  <div class="checkout__container container grid">
+    <div class="checkout__group">
+      <h3 class="section__title">Billing Details</h3>
+
+      <form class="form grid" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Address" name="address" class="form__input" required/>
+        <h3 class="checkout__title">Additional Information</h3>
+        <textarea
+          name="additional"
+          placeholder="order note"
+          class="form__input textarea"
+        ></textarea>
+        <button class="btn btn--md" type='submit'>Place Order</button>
+      </form>
+
+    </div>
+    <div class="checkout__group">
+      <h3 class="section__title">Cart Totals</h3>
+      <table class="order__table">
+        <thead>
+          <tr>
+            <th colspan="2">Products</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for product in products.products %}
+            <tr>
+                <td>
+                <img
+                    src="{{ product.data.image.url }}"
+                    alt=""
+                    class="order__img"
+                />
+                </td>
+                <td>
+                <h3 class="table__title">{{ product.data.name }}</h3>
+                <p class="table__quantity">x {{product.quantity}}</p>
+                </td>
+                <td><span class="table__price">${{ product.total }}</span></td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td><span class="order__subtitle">Total without discount</span></td>
+            <td colspan="2"><span class="table__price old__price">${{products.total_price}}</span></td>
+          </tr>
+          <tr>
+            <td><span class="order__subtitle">Profit</span></td>
+            <td colspan="2">
+              <span class="table__price">${{ products.profit }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="order__subtitle">Total</span></td>
+            <td colspan="2">
+              <span class="order__grand-total">${{ products.total_with_discount }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
